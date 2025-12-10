@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <!-- SEO JSON-LD Scripts Fragment - Place before closing body tag -->
+    <div th:fragment="seoScripts">
+      <!-- Structured Data for Organization -->
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Music Hub",
+          "url": "http://localhost:8080",
+          "logo": "http://localhost:8080/images/logo.png",
+          "description": "Music Hub - Your gateway to music management. Explore artists, albums, and songs.",
+          "sameAs": [
+            "https://www.facebook.com/musichubblog",
+            "https://www.twitter.com/musichubblog"
+          ]
+        }
+      </script>
+
+      <!-- Page-specific Structured Data -->
+      <script
+        type="application/ld+json"
+        th:if="${schemaJson}"
+        th:text="${schemaJson}"
+      ></script>
+
+      <!-- Breadcrumb Schema -->
+      <script type="application/ld+json" th:if="${breadcrumbSchema}">
+        [[${breadcrumbSchema}]]
+      </script>
+    </div>
+
+    <!-- SEO Footer Content -->
+    <footer
+      th:fragment="seoFooter"
+      class="bg-dark text-white mt-5 py-4 text-center"
+    >
+      <div class="container-lg">
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <h5>Quick Links</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a href="/home" class="text-decoration-none text-light"
+                  >🏠 Home</a
+                >
+              </li>
+              <li>
+                <a href="/search/artist" class="text-decoration-none text-light"
+                  >🎤 Artists</a
+                >
+              </li>
+              <li>
+                <a href="/search/album" class="text-decoration-none text-light"
+                  >📀 Albums</a
+                >
+              </li>
+              <li>
+                <a href="/search/song" class="text-decoration-none text-light"
+                  >🎵 Songs</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h5>Information</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a href="/about" class="text-decoration-none text-light"
+                  >About Music Hub</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-decoration-none text-light"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-decoration-none text-light"
+                  >Terms of Service</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-decoration-none text-light"
+                  >Contact Us</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h5>Follow Us</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a href="#" class="text-decoration-none text-light"
+                  >📘 Facebook</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-decoration-none text-light"
+                  >🐦 Twitter</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-decoration-none text-light"
+                  >📷 Instagram</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-decoration-none text-light"
+                  >▶️ YouTube</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="bg-light" />
+        <p class="mb-1">© 2025 Music Hub - All rights reserved</p>
+        <p class="text-muted small">Made with ❤️ for music lovers</p>
+        <p class="text-muted small">
+          <a href="/sitemap.xml" class="text-decoration-none text-muted"
+            >Sitemap</a
+          >
+          |
+          <a href="/robots.txt" class="text-decoration-none text-muted"
+            >Robots</a
+          >
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

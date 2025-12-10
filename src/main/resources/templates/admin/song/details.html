@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/main}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Song Details</title>
+  </head>
+  <body>
+    <section layout:fragment="content">
+      <div class="container-main">
+        <div class="section-header">
+          <h1>🎵 Song Details</h1>
+          <p>View complete song information</p>
+        </div>
+
+        <!-- Song Information Card -->
+        <div class="row mb-5">
+          <div class="col-lg-6">
+            <div class="card shadow-lg border-0 mb-4">
+              <div class="card-header bg-primary text-white fw-bold">
+                📋 Song Information
+              </div>
+              <div class="card-body">
+                <p class="mb-3">
+                  <strong>Title:</strong>
+                  <span
+                    class="text-primary fs-5"
+                    th:text="${song.title}"
+                  ></span>
+                </p>
+                <p class="mb-3">
+                  <strong>Genre:</strong>
+                  <span th:if="${song.genre != null}">
+                    <span
+                      class="badge bg-info"
+                      th:text="${song.genre.name}"
+                    ></span>
+                  </span>
+                  <span th:if="${song.genre == null}" class="text-muted"
+                    >N/A</span
+                  >
+                </p>
+                <p class="mb-3">
+                  <strong>Release Date:</strong>
+                  <span
+                    th:if="${song.releaseDate != null}"
+                    th:text="${song.releaseDate}"
+                  ></span>
+                  <span th:if="${song.releaseDate == null}" class="text-muted"
+                    >N/A</span
+                  >
+                </p>
+                <p class="mb-3">
+                  <strong>Artists:</strong>
+                  <div th:if="${artistSong != null and artistSong.size() > 0}">
+                    <span
+                      th:each="artist, iterStat : ${artistSong}"
+                    >
+                      <a
+                        th:href="@{/artist/details/{slug}(slug=${artist.artist.slug})}"
+                        class="text-decoration-none text-primary fw-bold"
+                        th:text="${artist.artist.name}"
+                      ></a>
+                      <span th:if="!${iterStat.last}">, </span>
+                    </span>
+                  </div>
+                  <span th:if="${artistSong == null or artistSong.size() == 0}" class="text-muted">N/A</span>
+                </p>
+                <p class="mb-0">
+                  <strong>Album:</strong>
+                  <div th:if="${album != null}">
+                    <a th:href="@{/album/details/{slug}(slug=${album.slug})}" class="text-decoration-none text-primary fw-bold" th:text="${album.title}"></a>
+                  </div>
+                  <span th:if="${album == null}" class="text-muted">N/A</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lyrics Card -->
+          <div class="col-lg-6">
+            <div class="card shadow-lg border-0">
+              <div class="card-header bg-secondary text-white fw-bold">
+                📝 Lyrics
+              </div>
+              <div class="card-body" style="max-height: 400px; overflow-y: auto">
+                <p
+                  class="text-muted"
+                  style="white-space: pre-wrap"
+                  th:text="${song.lyrics} ?: 'No lyrics available'"
+                ></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="mt-4">
+          <a href="/home" class="btn btn-secondary">← Back to Home</a>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

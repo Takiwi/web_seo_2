@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/main}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Song</title>
+  </head>
+  <body>
+    <section layout:fragment="content">
+      <div class="container-main">
+        <div class="section-header">
+          <h1>🎵 Update Song</h1>
+          <p>Edit song information</p>
+        </div>
+
+        <div class="col-lg-8">
+          <div class="card shadow-sm border-0">
+            <div class="card-header bg-warning text-dark fw-bold">
+              Update Song
+            </div>
+            <div class="card-body">
+              <form
+                th:action="@{/song/update/{id}(id=${song.id})}"
+                method="post"
+                enctype="multipart/form-data"
+              >
+                <div class="mb-3">
+                  <label for="title" class="form-label fw-bold"
+                    >Song Title *</label
+                  >
+                  <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    class="form-control"
+                    th:value="${song.title}"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="name" class="form-label fw-bold"
+                    >Artist Name *</label
+                  >
+                  <div class="input-group">
+                    <div class="w-100">
+                      <div th:each="artist : ${artists}" class="mb-2">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="artistName"
+                          th:value="${artist.name}"
+                        />
+                      </div>
+                    </div>
+                    <button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      id="addNameField"
+                    >
+                      ➕ Add More
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="genre" class="form-label fw-bold"
+                      >Genre *</label
+                    >
+                    <select
+                      name="genre"
+                      id="genre"
+                      class="form-select"
+                      required
+                    >
+                      <option value="">-- Select Genre --</option>
+                      <option
+                        th:each="genre : ${genres}"
+                        th:value="${genre.id}"
+                        th:text="${genre.name}"
+                        th:selected="${song.genre != null && song.genre.id == genre.id}"
+                      ></option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label for="country" class="form-label fw-bold"
+                      >Country *</label
+                    >
+                    <select
+                      name="country"
+                      id="country"
+                      class="form-select"
+                      required
+                    >
+                      <option value="">-- Select Country --</option>
+                      <option
+                        th:each="country : ${countries}"
+                        th:value="${country.id}"
+                        th:text="${country.name}"
+                        th:selected="${song.country != null && song.country.id == country.id}"
+                      ></option>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="album" class="form-label fw-bold">Album</label>
+                  <select name="album" id="album" class="form-select">
+                    <option value="">-- Select Album (Optional) --</option>
+                    <option
+                      th:each="album : ${albums}"
+                      th:value="${album.id}"
+                      th:text="${album.title}"
+                      th:selected="${song.album != null && song.album.id == album.id}"
+                    ></option>
+                  </select>
+                </div>>
+                  <label for="birth" class="form-label fw-bold"
+                    >Release Date</label
+                  >
+                  <input
+                    type="date"
+                    id="birth"
+                    name="releaseDate"
+                    class="form-control"
+                    th:value="${song.releaseDate != null? song.releaseDate : ''}"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="lyrics" class="form-label fw-bold">Lyrics</label>
+                  <textarea
+                    name="lyrics"
+                    id="lyrics"
+                    class="form-control"
+                    rows="6"
+                    th:text="${song.lyrics}"
+                  ></textarea>
+                </div>
+
+                <div class="mb-4">
+                  <label for="image" class="form-label fw-bold"
+                    >Song Image</label
+                  >
+                  <div class="mb-2">
+                    <img
+                      th:src="${imageUrl}"
+                      alt="Song image"
+                      width="150"
+                      class="rounded img-thumbnail"
+                    />
+                  </div>
+                  <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    class="form-control"
+                    accept="image/*"
+                  />
+                </div>
+
+                <div
+                  th:if="${error}"
+                  class="alert alert-danger mb-3"
+                  role="alert"
+                  th:text="${error}\"
+                ></div>
+
+                <div class="d-flex gap-2">
+                  <button type="submit" class="btn btn-warning btn-lg">
+                    ✏️ Update Song
+                  </button>
+                  <a href="/admin/songs" class="btn btn-secondary btn-lg">Cancel</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script th:src="@{/js/addInputField.js}\"></script>
+  </body>
+</html>

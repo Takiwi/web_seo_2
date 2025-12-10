@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/main}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Artist</title>
+  </head>
+  <body>
+    <section layout:fragment="content">
+      <div class="container-main">
+        <div class="section-header">
+          <h1>🎤 Update Artist</h1>
+          <p>Edit artist information</p>
+        </div>
+
+        <div class="col-lg-8">
+          <div class="card shadow-sm border-0">
+            <div class="card-header bg-warning text-dark fw-bold">
+              Update Information
+            </div>
+            <div class="card-body">
+              <form
+                th:action="@{/artist/update/{id}(id=${artist.id})}"
+                method="post"
+                enctype="multipart/form-data"
+              >
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="name" class="form-label fw-bold"
+                      >Full Name *</label
+                    >
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      class="form-control"
+                      th:value="${artist.name}"
+                      required
+                    />
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label for="stageName" class="form-label fw-bold"
+                      >Stage Name</label
+                    >
+                    <input
+                      type="text"
+                      id="stageName"
+                      name="stageName"
+                      class="form-control"
+                      th:value="${artist.stageName}"
+                    />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Gender</label>
+                    <div class="d-flex gap-3">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          id="male"
+                          name="gender"
+                          value="MALE"
+                          th:checked="${artist.gender.toString() == 'MALE'}"
+                        />
+                        <label class="form-check-label" for="male">Male</label>
+                      </div>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          id="female"
+                          name="gender"
+                          value="FEMALE"
+                          th:checked="${artist.gender.toString() == 'FEMALE'}"
+                        />
+                        <label class="form-check-label" for="female"
+                          >Female</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label for="country" class="form-label fw-bold"
+                      >Country *</label
+                    >
+                    <select
+                      name="country"
+                      id="country"
+                      class="form-select"
+                      required
+                    >
+                      <option value="">-- Select Country --</option>
+                      <option
+                        th:each="country : ${countries}"
+                        th:value="${country.id}"
+                        th:text="${country.name}"
+                        th:selected="${artist.country != null && artist.country.id == country.id}"
+                      ></option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="type" class="form-label fw-bold">Type *</label>
+                    <select name="type" id="type" class="form-select" required>
+                      <option value="">-- Select Type --</option>
+                      <option
+                        th:each="type : ${types}"
+                        th:value="${type.id}"
+                        th:text="${type.name}"
+                        th:selected="${artist.type != null && artist.type.id == type.id}"
+                      ></option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="birth" class="form-label fw-bold"
+                      >Date of Birth</label
+                    >
+                    <input
+                      type="date"
+                      id="birth"
+                      name="dateOfBirth"
+                      class="form-control"
+                      th:value="${artist.dateOfBirth}"
+                    />
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label for="death" class="form-label fw-bold"
+                      >Date of Death</label
+                    >
+                    <input
+                      type="date"
+                      id="death"
+                      name="dateOfDeath"
+                      class="form-control"
+                      th:value="${artist.dateOfDeath != null? artist.dateOfDeath : ''}"
+                    />
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="bio" class="form-label fw-bold">Biography</label>
+                  <textarea
+                    name="bio"
+                    id="bio"
+                    class="form-control"
+                    rows="5"
+                    th:text="${artist.bio}"
+                  ></textarea>
+                </div>
+
+                <div class="mb-4">
+                  <label for="image" class="form-label fw-bold"
+                    >Profile Image</label
+                  >
+                  <div class="mb-2">
+                    <img
+                      th:src="${imageUrl}"
+                      alt="Artist image"
+                      width="150"
+                      class="rounded img-thumbnail"
+                    />
+                  </div>
+                  <input
+                    type="file"
+                    id="image"
+                    name="imageFile"
+                    class="form-control"
+                    accept="image/*"
+                  />
+                </div>
+
+                <div class="d-flex gap-2">
+                  <button type="submit" class="btn btn-warning btn-lg">
+                    ✏️ Update Artist
+                  </button>
+                  <a href="/admin/artists" class="btn btn-secondary btn-lg"
+                    >Cancel</a
+                  >
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

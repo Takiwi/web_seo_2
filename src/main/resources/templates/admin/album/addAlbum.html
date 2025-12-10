@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/main}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Album</title>
+  </head>
+  <body>
+    <section layout:fragment="content">
+      <div class="container-main">
+        <div class="section-header">
+          <h1>📀 Add New Album</h1>
+          <p>Create a new album</p>
+        </div>
+
+        <div class="col-lg-8">
+          <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white fw-bold">
+              Album Information
+            </div>
+            <div class="card-body">
+              <form
+                th:action="@{/album/add}"
+                method="post"
+                enctype="multipart/form-data"
+              >
+                <div class="mb-3">
+                  <label for="title" class="form-label fw-bold"
+                    >Album Title *</label
+                  >
+                  <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    class="form-control"
+                    placeholder="Enter album title"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="name" class="form-label fw-bold"
+                    >Artist Name *</label
+                  >
+                  <input
+                    type="text"
+                    id="name"
+                    name="artist"
+                    class="form-control"
+                    placeholder="Enter artist name"
+                    required
+                  />
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="releaseDate" class="form-label fw-bold"
+                      >Release Date</label
+                    >
+                    <input
+                      type="date"
+                      id="releaseDate"
+                      name="releaseDate"
+                      class="form-control"
+                    />
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label for="label" class="form-label fw-bold">Label</label>
+                    <input
+                      type="text"
+                      id="label"
+                      name="label"
+                      class="form-control"
+                      placeholder="Record label"
+                    />
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="description" class="form-label fw-bold"
+                    >Description</label
+                  >
+                  <textarea
+                    name="description"
+                    id="description"
+                    class="form-control"
+                    rows="5"
+                    placeholder="Enter album description..."
+                  ></textarea>
+                </div>
+
+                <div class="mb-4">
+                  <label for="image" class="form-label fw-bold"
+                    >Album Cover</label
+                  >
+                  <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    class="form-control"
+                    accept="image/*"
+                  />
+                </div>
+
+                <div class="d-flex gap-2">
+                  <button type="submit" class="btn btn-success btn-lg">
+                    ✅ Add Album
+                  </button>
+                  <a href="/admin" class="btn btn-secondary btn-lg">Cancel</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

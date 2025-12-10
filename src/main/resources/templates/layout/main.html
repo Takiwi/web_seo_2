@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+  <head>
+    <!-- Meta Tags for SEO -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#6366f1" />
+
+    <!-- Primary Meta Tags -->
+    <meta
+      name="title"
+      th:content="${pageTitle} ? ${pageTitle} : 'Music Hub - Explore Artists, Albums & Songs'"
+    />
+    <meta
+      name="description"
+      th:content="${pageDescription} ? ${pageDescription} : 'Music Hub - Your gateway to music management. Explore artists, albums, and songs.'"
+    />
+    <meta
+      name="keywords"
+      th:content="${pageKeywords} ? ${pageKeywords} : 'music, artists, albums, songs, music hub'"
+    />
+    <meta name="author" content="Music Hub Team" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+
+    <!-- Canonical URL -->
+    <link
+      rel="canonical"
+      th:href="${canonicalUrl} ? ${canonicalUrl} : 'http://localhost:8080/home'"
+    />
+
+    <!-- Open Graph / Facebook Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      th:content="${pageTitle} ? ${pageTitle} : 'Music Hub'"
+    />
+    <meta
+      property="og:description"
+      th:content="${pageDescription} ? ${pageDescription} : 'Discover and manage your favorite music'"
+    />
+    <meta
+      property="og:url"
+      th:content="${canonicalUrl} ? ${canonicalUrl} : 'http://localhost:8080/home'"
+    />
+    <meta
+      property="og:image"
+      th:content="${ogImage} ? ${ogImage} : '/images/logo.png'"
+    />
+    <meta property="og:site_name" content="Music Hub" />
+
+    <!-- Twitter Meta Tags -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:title"
+      th:content="${pageTitle} ? ${pageTitle} : 'Music Hub'"
+    />
+    <meta
+      property="twitter:description"
+      th:content="${pageDescription} ? ${pageDescription} : 'Discover and manage your favorite music'"
+    />
+    <meta
+      property="twitter:image"
+      th:content="${ogImage} ? ${ogImage} : '/images/logo.png'"
+    />
+    <meta property="twitter:creator" content="@musichubblog" />
+
+    <!-- Additional SEO Meta Tags -->
+    <meta
+      name="google-site-verification"
+      content="your-google-verification-code"
+    />
+
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">
+      Music Hub
+    </title>
+
+    <link
+      rel="shortcut icon"
+      th:href="@{/images/logo.png}"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/custom.css}" />
+
+    <!-- Preconnect to external resources for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <!-- Navbar -->
+      <nav
+        class="navbar navbar-expand-lg navbar-dark"
+        style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)"
+      >
+        <div class="container-lg">
+          <a
+            class="navbar-brand fw-bold d-flex justify-content-between align-items-center"
+            href="/home"
+          >
+            <img
+              th:src="@{/images/logo.png}"
+              alt="Logo"
+              width="40"
+              class="d-inline-block align-text-top me-2"
+            />
+            Music Hub
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav ms-auto">
+              <a class="nav-link" href="/home">Home</a>
+              <a class="nav-link" href="#">Explore</a>
+              <a class="nav-link" href="/about">About</a>
+            </div>
+            <div class="navbar-nav ms-3">
+              <form th:action="@{/logout}" class="d-flex">
+                <button type="submit" class="btn btn-light btn-sm fw-bold">
+                  Logout
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="bg-light border-bottom py-2">
+      <div class="container-lg">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li
+              class="breadcrumb-item active"
+              th:if="${isHomePage}"
+              aria-current="page"
+            >
+              <span class="text-primary fw-bold">🏠 Home</span>
+            </li>
+            <li class="breadcrumb-item" th:unless="${isHomePage}">
+              <a href="/home" class="text-decoration-none text-primary fw-bold"
+                >🏠 Home</a
+              >
+            </li>
+            <li
+              class="breadcrumb-item active"
+              th:unless="${isHomePage}"
+              aria-current="page"
+            >
+              <span th:text="${breadcrumbTitle}">Page</span>
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-lg">
+      <div class="row mt-4">
+        <div class="col-lg-3 mb-4">
+          <!-- Sidebar -->
+          <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white fw-bold">Menu</div>
+            <div class="list-group list-group-flush">
+              <a
+                href="/search/artist"
+                class="list-group-item list-group-item-action"
+                >🎤 Search Artist</a
+              >
+              <a
+                href="/search/song"
+                class="list-group-item list-group-item-action"
+                >🎵 Search Song</a
+              >
+              <a
+                href="/search/album"
+                class="list-group-item list-group-item-action"
+                >📀 Search Album</a
+              >
+              <a
+                th:if="${isAdmin}"
+                href="/admin"
+                class="list-group-item list-group-item-action"
+                >⚙️ Admin Dashboard</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-9">
+          <section layout:fragment="content">
+            <!-- default content -->
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white mt-5 py-4 text-center">
+      <div class="container-lg">
+        <p class="mb-1">© 2025 Music Hub - All rights reserved</p>
+        <p class="text-muted small">Made with ❤️ for music lovers</p>
+      </div>
+    </footer>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+  </body>
+</html>

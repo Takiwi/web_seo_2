@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <!-- SEO Breadcrumb Fragment -->
+    <nav
+      aria:label="breadcrumb"
+      th:fragment="breadcrumb"
+      class="d-flex justify-content-between"
+    >
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item">
+          <a
+            href="/"
+            th:href="@{/home}"
+            class="text-decoration-none text-primary fw-bold"
+            >🏠 Home</a
+          >
+        </li>
+        <li
+          class="breadcrumb-item active"
+          th:if="${breadcrumbItems != null}"
+          th:each="item : ${breadcrumbItems}"
+          th:text="${item.label}"
+        ></li>
+      </ol>
+    </nav>
+
+    <!-- SEO Image Fragment -->
+    <img
+      th:fragment="seoImage(imageUrl, altText, title)"
+      th:src="${imageUrl}"
+      th:alt="${altText}"
+      th:title="${title}"
+      loading="lazy"
+    />
+
+    <!-- SEO Article Fragment -->
+    <article
+      th:fragment="seoArticle"
+      itemscope
+      itemtype="https://schema.org/Article"
+    >
+      <meta itemprop="headline" th:content="${pageTitle}" />
+      <meta itemprop="description" th:content="${pageDescription}" />
+      <meta itemprop="image" th:content="${ogImage}" />
+      <meta itemprop="author" content="Music Hub Team" />
+      <meta itemprop="datePublished" th:content="${publishDate}" />
+    </article>
+  </body>
+</html>

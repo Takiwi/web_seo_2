@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/main}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Album Results</title>
+  </head>
+  <body>
+    <section layout:fragment="content">
+      <div class="container-main">
+        <!-- Results Section Header -->
+        <div class="section-header mb-5">
+          <h1>📀 Album Search Results</h1>
+          <p>Browse search results</p>
+        </div>
+
+        <!-- Search Results Section -->
+        <div th:if="${albumList != null}">
+          <div class="section-header mb-4">
+            <h2>Results</h2>
+            <p th:text="'Found ' + ${albumList.size()} + ' album(s)'"></p>
+          </div>
+
+          <div th:if="${albumList.size() > 0}">
+            <div class="row">
+              <div
+                th:each="album : ${albumList}"
+                class="col-md-6 col-lg-4 mb-4"
+              >
+                <div class="card shadow-lg border-0 h-100 card-hover">
+                  <div th:if="${album.image}" class="card-img-top">
+                    <img
+                      th:if="${album.image != null and album.image != ''}"
+                      th:src="@{'/image/album/' + ${album.id} + '/' + ${album.image}}"
+                      th:alt="${album.title}"
+                      class="img-fluid"
+                      style="height: 200px; object-fit: cover"
+                      onerror="this.src='/images/default-image.jpg'"
+                    />
+                    <img
+                      th:if="${album.image == null or album.image == ''}"
+                      src="/images/default-image.jpg"
+                      alt="Default Image"
+                      class="img-fluid"
+                      style="height: 200px; object-fit: cover"
+                    />
+                  </div>
+                  <div th:if="!${album.image}" class="card-img-top">
+                    <img
+                      src="/images/default-image.jpg"
+                      alt="Default Image"
+                      class="img-fluid"
+                      style="height: 200px; object-fit: cover"
+                    />
+                  </div>
+                  <div class="card-body">
+                    <h5
+                      class="card-title text-primary fw-bold"
+                      th:text="${album.title}"
+                    ></h5>
+                    <p class="card-text text-muted small mb-2">
+                      <strong>Artist:</strong>
+                      <span
+                        th:if="${album.artists != null and album.artists.size() > 0}"
+                        th:text="${#strings.listJoin(album.artists.![name], ', ')}"
+                      ></span>
+                      <span
+                        th:if="${album.artists == null or album.artists.size() == 0}"
+                        class="text-muted"
+                        >N/A</span
+                      >
+                    </p>
+                    <p class="card-text text-muted small mb-2">
+                      <strong>Release Date:</strong>
+                      <span
+                        th:if="${album.releaseDate != null}"
+                        th:text="${album.releaseDate}"
+                      ></span>
+                      <span
+                        th:if="${album.releaseDate == null}"
+                        class="text-muted"
+                        >N/A</span
+                      >
+                    </p>
+                    <p class="card-text text-muted small mb-2">
+                      <strong>Label:</strong>
+                      <span th:text="${album.label} ?: 'N/A'"></span>
+                    </p>
+                    <p
+                      class="card-text text-muted small text-truncate"
+                      th:title="${album.description}"
+                    >
+                      <strong>Description:</strong>
+                      <span
+                        th:text="${album.description} ?: 'No description'"
+                      ></span>
+                    </p>
+                  </div>
+                  <div class="card-footer bg-light border-top">
+                    <a
+                      th:href="@{/album/details/{slug}(slug=${album.slug})}"
+                      class="btn btn-sm btn-primary"
+                    >
+                      👁️ View Details
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div th:if="${albumList.size() == 0}" class="alert alert-info">
+            <span>No albums found!</span>
+          </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="mt-4">
+          <a href="/home" class="btn btn-secondary">← Back to Home</a>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

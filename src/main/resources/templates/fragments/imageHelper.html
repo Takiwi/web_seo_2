@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <!-- Image Helper Fragment - Displays image with fallback to default-image.jpg -->
+    <!-- Usage: <div th:replace="~{fragments/imageHelper :: image(imagePath=${artist.image}, entityId=${artist.id}, entityType='artist', altText=${artist.name}, cssClass='img-fluid mb-4 rounded')}"></div> -->
+    <div
+      th:fragment="image(imagePath, entityId, entityType, altText, cssClass)"
+    >
+      <img
+        th:if="${imagePath != null and imagePath != ''}"
+        th:src="@{'/image/' + ${entityType} + '/' + ${entityId} + '/' + ${imagePath}}"
+        th:alt="${altText ?: 'Image'}"
+        th:title="${altText ?: 'Image'}"
+        th:class="${cssClass}"
+        onerror="this.src='/images/default-image.jpg'"
+      />
+      <img
+        th:if="${imagePath == null or imagePath == ''}"
+        src="/images/default-image.jpg"
+        th:alt="${altText ?: 'Image'}"
+        th:title="Default Image"
+        th:class="${cssClass}"
+      />
+    </div>
+
+    <!-- Simplified Image Fragment - For when you already have the full image path -->
+    <!-- Usage: <div th:replace="~{fragments/imageHelper :: simpleImage(imagePath=${fullImagePath}, altText=${description}, cssClass='img-fluid rounded')}"></div> -->
+    <div th:fragment="simpleImage(imagePath, altText, cssClass)">
+      <img
+        th:if="${imagePath != null and imagePath != ''}"
+        th:src="@{${imagePath}}"
+        th:alt="${altText ?: 'Image'}"
+        th:title="${altText ?: 'Image'}"
+        th:class="${cssClass}"
+        onerror="this.src='/images/default-image.jpg'"
+      />
+      <img
+        th:if="${imagePath == null or imagePath == ''}"
+        src="/images/default-image.jpg"
+        th:alt="${altText ?: 'Image'}"
+        th:title="Default Image"
+        th:class="${cssClass}"
+      />
+    </div>
+  </body>
+</html>

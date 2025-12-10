@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/main}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us</title>
+  </head>
+  <body>
+    <section layout:fragment="content">
+      <div class="container-main">
+        <!-- Page Header -->
+        <div class="section-header mb-5">
+          <h1>ℹ️ About Us</h1>
+          <p>Learn more about our music platform</p>
+        </div>
+
+        <!-- About Content -->
+        <div class="row">
+          <div class="col-lg-8">
+            <!-- What is MusicDB -->
+            <div class="card shadow-lg border-0 mb-4">
+              <div class="card-header bg-primary text-white fw-bold">
+                🎵 What is Music Hub?
+              </div>
+              <div class="card-body">
+                <p class="text-muted mb-3">
+                  Music Hub is a comprehensive music management platform
+                  designed to help you discover, organize, and explore your
+                  favorite artists, albums, and songs all in one place.
+                </p>
+                <p class="text-muted mb-0">
+                  Our platform provides an intuitive interface for browsing
+                  music content, managing your collection, and learning about
+                  the artists behind the music.
+                </p>
+              </div>
+            </div>
+
+            <!-- Features -->
+            <div class="card shadow-lg border-0 mb-4">
+              <div class="card-header bg-success text-white fw-bold">
+                ✨ Features
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <div class="d-flex gap-3">
+                      <div class="flex-shrink-0">
+                        <span class="badge bg-primary p-2">🎤</span>
+                      </div>
+                      <div>
+                        <h6 class="fw-bold text-primary">Artist Management</h6>
+                        <p class="text-muted small mb-0">
+                          Browse and manage detailed artist profiles with
+                          biography and discography
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <div class="d-flex gap-3">
+                      <div class="flex-shrink-0">
+                        <span class="badge bg-info p-2">📀</span>
+                      </div>
+                      <div>
+                        <h6 class="fw-bold text-info">Album Catalog</h6>
+                        <p class="text-muted small mb-0">
+                          Explore albums with complete track listings and
+                          release information
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <div class="d-flex gap-3">
+                      <div class="flex-shrink-0">
+                        <span class="badge bg-warning p-2">🎵</span>
+                      </div>
+                      <div>
+                        <h6 class="fw-bold text-warning">Song Database</h6>
+                        <p class="text-muted small mb-0">
+                          Access a vast collection of songs with lyrics and
+                          metadata
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <div class="d-flex gap-3">
+                      <div class="flex-shrink-0">
+                        <span class="badge bg-danger p-2">🔍</span>
+                      </div>
+                      <div>
+                        <h6 class="fw-bold text-danger">Advanced Search</h6>
+                        <p class="text-muted small mb-0">
+                          Find your favorite music using flexible search filters
+                          and criteria
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- How to Use -->
+            <div class="card shadow-lg border-0 mb-4">
+              <div class="card-header bg-info text-white fw-bold">
+                📚 How to Use
+              </div>
+              <div class="card-body">
+                <ol class="text-muted">
+                  <li class="mb-2">
+                    <strong>Search:</strong> Use the search bar on the home page
+                    to find artists, songs, or albums
+                  </li>
+                  <li class="mb-2">
+                    <strong>Explore:</strong> Click on artist or album cards to
+                    view detailed information
+                  </li>
+                  <li class="mb-2">
+                    <strong>Discover:</strong> Browse through collections to
+                    find new music and artists
+                  </li>
+                  <li class="mb-2">
+                    <strong>Learn:</strong> Read artist biographies and song
+                    details to enhance your knowledge
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <div class="col-lg-4">
+            <!-- Quick Links -->
+            <div class="card shadow-lg border-0 mb-4">
+              <div class="card-header bg-warning text-dark fw-bold">
+                🔗 Quick Links
+              </div>
+              <div class="card-body">
+                <div class="list-group list-group-flush">
+                  <a
+                    href="/home"
+                    class="list-group-item list-group-item-action border-0 px-0 py-2"
+                  >
+                    <span class="text-primary fw-bold">🏠 Home</span>
+                  </a>
+                  <a
+                    href="/search/artist"
+                    class="list-group-item list-group-item-action border-0 px-0 py-2"
+                  >
+                    <span class="text-primary fw-bold">🎤 Search Artists</span>
+                  </a>
+                  <a
+                    href="/search/album"
+                    class="list-group-item list-group-item-action border-0 px-0 py-2"
+                  >
+                    <span class="text-primary fw-bold">📀 Search Albums</span>
+                  </a>
+                  <a
+                    href="/search/song"
+                    class="list-group-item list-group-item-action border-0 px-0 py-2"
+                  >
+                    <span class="text-primary fw-bold">🎵 Search Songs</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="card shadow-lg border-0">
+              <div class="card-header bg-secondary text-white fw-bold">
+                📧 Contact & Support
+              </div>
+              <div class="card-body">
+                <p class="text-muted mb-2">
+                  <strong>Email:</strong><br />
+                  <a
+                    href="mailto:support@musichub.com"
+                    class="text-primary text-decoration-none"
+                  >
+                    support@musichub.com
+                  </a>
+                </p>
+                <p class="text-muted mb-2">
+                  <strong>Version:</strong><br />
+                  <span class="badge bg-primary">1.0.0</span>
+                </p>
+                <p class="text-muted mb-0">
+                  <strong>Last Updated:</strong><br />
+                  <span>December 2025</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="mt-4">
+          <a href="/home" class="btn btn-secondary">← Back to Home</a>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

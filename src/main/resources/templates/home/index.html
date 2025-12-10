@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/main}"
+>
+  <head>
+    <title>Home</title>
+  </head>
+  <body>
+    <section layout:fragment="content">
+      <div class="container-main">
+        <!-- Random Artist Section -->
+        <div class="section-header mb-5">
+          <h1>🎤 Random Artist</h1>
+          <p>Discover a random artist from our collection!</p>
+        </div>
+
+        <div th:if="${artist != null}" class="row mb-5">
+          <div class="col-lg-6 mx-auto">
+            <div class="card shadow-lg border-0 overflow-hidden card-hover">
+              <a
+                th:href="@{/artist/details/{slug}(slug=${artist.slug})}"
+                class="text-decoration-none text-dark"
+              >
+                <div class="position-relative">
+                  <img
+                    th:if="${artist.image != null and artist.image != ''}"
+                    th:src="@{'/image/artist/' + ${artist.id} + '/' + ${artist.image}}"
+                    th:alt="${'Photo of ' + artist.name}"
+                    class="img-fluid w-100"
+                    style="height: 300px; object-fit: cover"
+                    onerror="this.src='/images/default-image.jpg'"
+                  />
+                  <img
+                    th:if="${artist.image == null or artist.image == ''}"
+                    src="/images/default-image.jpg"
+                    alt="Default Image"
+                    class="img-fluid w-100"
+                    style="height: 300px; object-fit: cover"
+                  />
+                  <div class="position-absolute top-0 start-0 m-3">
+                    <span class="badge bg-primary p-2">✨ Featured</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <h3
+                    class="card-title text-primary fw-bold mb-2"
+                    th:text="${artist.name}"
+                  >
+                    Artist Name
+                  </h3>
+                  <p class="card-text text-muted small mb-2">
+                    <strong>Stage Name:</strong>
+                    <span th:text="${artist.stageName}"></span>
+                  </p>
+                  <p class="card-text text-muted small mb-3">
+                    <strong>Country:</strong>
+                    <span
+                      th:if="${artist.country != null}"
+                      th:text="${artist.country.name}"
+                    ></span>
+                    <span th:if="${artist.country == null}">N/A</span>
+                  </p>
+                  <p
+                    class="card-text text-muted"
+                    th:text="${artist.bio != null and artist.bio != '' ? artist.bio : 'No biography available'}"
+                    style="text-align: justify"
+                  >
+                    Artist Bio
+                  </p>
+                </div>
+                <div class="card-footer bg-light border-top">
+                  <button class="btn btn-primary w-100">
+                    View Artist Details
+                  </button>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div th:if="${artist == null}" class="alert alert-info text-center">
+          <span>No artist found</span>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/main}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="application/ld+json" th:utext="${schemaJson}"></script>
+    <title>Artist Details</title>
+  </head>
+  <body>
+    <section layout:fragment="content">
+      <div class="container-main">
+        <div class="section-header">
+          <h1>🎤 Artist Details</h1>
+          <p>View artist profile and discography</p>
+        </div>
+
+        <!-- Artist Profile Card -->
+        <div class="row mb-5">
+          <div class="col-lg-4 mb-4">
+            <div class="card shadow-lg border-0">
+              <div class="card-body text-center">
+                <div
+                  th:replace="~{fragments/imageHelper :: image(imagePath=${artist.image}, entityId=${artist.id}, entityType='artist', altText=${'Photo of ' + artist.name}, cssClass='img-fluid mb-4 rounded')}"
+                ></div>
+                <style>
+                  .imageHelper-container img {
+                    max-height: 300px;
+                    object-fit: cover;
+                  }
+                </style>
+                <h4 class="text-primary fw-bold" th:text="${artist.name}"></h4>
+                <p class="text-muted mb-3" th:text="${artist.stageName}"></p>
+                <div class="text-start">
+                  <p class="mb-2">
+                    <span class="badge bg-primary">Gender:</span>
+                    <strong th:text="${artist.gender}"></strong>
+                  </p>
+                  <p class="mb-2">
+                    <span class="badge bg-primary">Country:</span>
+                    <strong th:text="${artist.country.name}"></strong>
+                  </p>
+                  <p class="mb-0">
+                    <span class="badge bg-primary">Type:</span>
+                    <strong th:text="${artist.type.name}"></strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-8">
+            <!-- Artist Bio -->
+            <div class="card shadow-lg border-0 mb-4">
+              <div class="card-header bg-primary text-white fw-bold">
+                Biography
+              </div>
+              <div class="card-body">
+                <p
+                  th:text="${artist.bio} ?: 'No biography available'"
+                  class="text-muted"
+                ></p>
+              </div>
+            </div>
+
+            <!-- Birth/Death Info -->
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card shadow-lg border-0 mb-4">
+                  <div class="card-header bg-info text-white fw-bold">
+                    Birth Information
+                  </div>
+                  <div class="card-body">
+                    <p class="mb-0" th:if="${artist.dateOfBirth != null}">
+                      <strong>Date of Birth:</strong><br />
+                      <span th:text="${artist.dateOfBirth}"></span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card shadow-lg border-0 mb-4">
+                  <div class="card-header bg-danger text-white fw-bold">
+                    Death Information
+                  </div>
+                  <div class="card-body">
+                    <p class="mb-0" th:if="${artist.dateOfDeath != null}">
+                      <strong>Date of Death:</strong><br />
+                      <span th:text="${artist.dateOfDeath}"></span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Albums Table -->
+        <div class="card shadow-lg border-0 mb-5">
+          <div class="card-header bg-warning text-dark fw-bold">📀 Albums</div>
+          <div class="card-body">
+            <div th:if="${albumList != null and albumList.size() > 0}">
+              <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                  <thead class="table-light">
+                    <tr>
+                      <th>#</th>
+                      <th>Album Title</th>
+                      <th>Release Date</th>
+                      <th>Label</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="album, iterStat : ${albumList}">
+                      <td>
+                        <span
+                          class="badge bg-warning"
+                          th:text="${iterStat.count}"
+                        ></span>
+                      </td>
+                      <td class="fw-bold text-primary">
+                        <a
+                          th:href="@{/album/details/{slug}(slug=${album.slug})}"
+                          class="text-decoration-none text-primary fw-bold"
+                          th:text="${album.title}"
+                        ></a>
+                      </td>
+                      <td>
+                        <span
+                          th:if="${album.releaseDate != null}"
+                          th:text="${album.releaseDate}"
+                        ></span>
+                        <span
+                          th:if="${album.releaseDate == null}"
+                          class="text-muted"
+                          >N/A</span
+                        >
+                      </td>
+                      <td>
+                        <span th:text="${album.label} ?: 'N/A'"></span>
+                      </td>
+                      <td>
+                        <span
+                          class="text-muted text-truncate d-inline-block"
+                          style="max-width: 200px"
+                          th:title="${album.description}"
+                          th:text="${album.description} ?: 'No description'"
+                        ></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="text-muted mt-3">
+                Total albums: <strong th:text="${albumList.size()}"></strong>
+              </p>
+            </div>
+            <div
+              th:if="${albumList == null or albumList.size() == 0}"
+              class="alert alert-info"
+            >
+              <span>No albums found for this artist</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Songs Table -->
+        <div class="card shadow-lg border-0">
+          <div class="card-header bg-primary text-white fw-bold">🎵 Songs</div>
+          <div class="card-body">
+            <div th:if="${songList != null and songList.size() > 0}">
+              <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                  <thead class="table-light">
+                    <tr>
+                      <th>#</th>
+                      <th>Song Title</th>
+                      <th>Genre</th>
+                      <th>Release Date</th>
+                      <th>Lyrics Preview</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="song, iterStat : ${songList}">
+                      <td>
+                        <span
+                          class="badge bg-primary"
+                          th:text="${iterStat.count}"
+                        ></span>
+                      </td>
+                      <td class="fw-bold text-primary">
+                        <a
+                          th:href="@{http://localhost:8080/song/details/{slug}(slug=${song.slug})}"
+                          th:text="${song.title}"
+                        ></a>
+                      </td>
+                      <td>
+                        <span
+                          class="badge bg-info"
+                          th:text="${song.genre} ?: 'N/A'"
+                        ></span>
+                      </td>
+                      <td>
+                        <span
+                          th:if="${song.releaseDate != null}"
+                          th:text="${song.releaseDate}"
+                        ></span>
+                      </td>
+                      <td>
+                        <span
+                          class="text-muted text-truncate d-inline-block"
+                          style="max-width: 200px"
+                          th:title="${song.lyrics}"
+                          th:text="${song.lyrics} ?: 'No lyrics'"
+                        ></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="text-muted mt-3">
+                Total songs: <strong th:text="${songList.size()}"></strong>
+              </p>
+            </div>
+            <div
+              th:if="!${songList} or ${songList.size() == 0}"
+              class="alert alert-info"
+            >
+              <span>No songs found for this artist</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="mt-4">
+          <a href="/home" class="btn btn-secondary">← Back to Home</a>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

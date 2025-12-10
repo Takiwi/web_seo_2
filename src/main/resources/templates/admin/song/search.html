@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/main}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Results</title>
+  </head>
+  <body>
+    <section layout:fragment="content">
+      <div class="container-main">
+        <!-- Search Section Header -->
+        <div class="section-header mb-5">
+          <h1>🎵 Search Songs</h1>
+          <p>Find songs by name or genre</p>
+        </div>
+
+        <!-- Song Search Form -->
+        <div class="card shadow-lg border-0 mb-5">
+          <div class="card-header bg-primary text-white fw-bold">
+            Search Criteria
+          </div>
+          <div class="card-body">
+            <form th:action="@{/search/song}" method="post">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="name" class="form-label fw-bold">Song Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    placeholder="Enter song name"
+                  />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label for="genre" class="form-label fw-bold">Genre</label>
+                  <select name="genre" id="genre" class="form-select">
+                    <option value="">-- Select Genre --</option>
+                    <option
+                      th:each="genre : ${genres}"
+                      th:value="${genre.id}"
+                      th:text="${genre.name}"
+                    ></option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary mt-4">
+                🔍 Search Songs
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

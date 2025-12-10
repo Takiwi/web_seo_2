@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <!-- SEO Meta Tags Helper Fragment -->
+    <div th:fragment="seoMetaTags">
+      <!-- Update title if pageTitle is provided -->
+      <title th:if="${pageTitle}" th:text="${pageTitle} + ' - Music Hub'">
+        Music Hub
+      </title>
+
+      <!-- Primary Meta Tags -->
+      <meta
+        name="title"
+        th:if="${pageTitle}"
+        th:content="${pageTitle} + ' - Music Hub'"
+      />
+      <meta
+        name="description"
+        th:if="${pageDescription}"
+        th:content="${pageDescription}"
+        th:unless="${pageDescription == null}"
+      />
+      <meta
+        name="keywords"
+        th:if="${pageKeywords}"
+        th:content="${pageKeywords}"
+        th:unless="${pageKeywords == null}"
+      />
+
+      <!-- Canonical URL -->
+      <link rel="canonical" th:if="${canonicalUrl}" th:href="${canonicalUrl}" />
+
+      <!-- Open Graph / Facebook Meta Tags -->
+      <meta property="og:type" content="website" />
+      <meta
+        property="og:title"
+        th:if="${pageTitle}"
+        th:content="${pageTitle} + ' - Music Hub'"
+      />
+      <meta
+        property="og:description"
+        th:if="${pageDescription}"
+        th:content="${pageDescription}"
+      />
+      <meta
+        property="og:url"
+        th:if="${canonicalUrl}"
+        th:content="${canonicalUrl}"
+      />
+      <meta property="og:image" th:if="${ogImage}" th:content="${ogImage}" />
+      <meta property="og:site_name" content="Music Hub" />
+      <meta property="og:locale" content="en_US" />
+
+      <!-- Twitter Meta Tags -->
+      <meta property="twitter:card" content="summary_large_image" />
+      <meta
+        property="twitter:title"
+        th:if="${pageTitle}"
+        th:content="${pageTitle}"
+      />
+      <meta
+        property="twitter:description"
+        th:if="${pageDescription}"
+        th:content="${pageDescription}"
+      />
+      <meta
+        property="twitter:image"
+        th:if="${ogImage}"
+        th:content="${ogImage}"
+      />
+      <meta property="twitter:creator" content="@musichubblog" />
+
+      <!-- Additional Tags -->
+      <meta
+        name="robots"
+        content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+      />
+      <meta name="language" content="English" />
+      <meta name="revisit-after" content="7 days" />
+    </div>
+  </head>
+  <body></body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/main}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Results</title>
+  </head>
+  <body>
+    <section layout:fragment="content">
+      <div class="container-main">
+        <!-- Search Results Section -->
+        <div th:if="${songList != null}">
+          <div class="section-header mb-4">
+            <h2>Song Results</h2>
+            <p th:text="'Found ' + ${songList.size()} + ' song(s)'"></p>
+          </div>
+
+          <div th:if="${songList.size() > 0}">
+            <div class="row">
+              <div th:each="song : ${songList}" class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-lg border-0 h-100 card-hover">
+                  <div class="card-body">
+                    <h5
+                      class="card-title text-primary fw-bold"
+                      th:text="${song.title}"
+                    ></h5>
+                    <p class="card-text text-muted mb-2">
+                      <strong>Artist:</strong>
+                      <span
+                        th:if="${song.artists != null and song.artists.size() > 0}"
+                        th:text="${#strings.listJoin(song.artists.![name], ', ')}"
+                      ></span>
+                      <span
+                        th:if="${song.artists == null or song.artists.size() == 0}"
+                        class="text-muted"
+                        >N/A</span
+                      >
+                    </p>
+                    <p class="card-text text-muted mb-2">
+                      <strong>Genre:</strong>
+                      <span
+                        th:if="${song.genre != null}"
+                        th:text="${song.genre.name}"
+                      ></span>
+                      <span th:if="${song.genre == null}" class="text-muted"
+                        >N/A</span
+                      >
+                    </p>
+                    <p class="card-text text-muted mb-3">
+                      <strong>Release Date:</strong>
+                      <span
+                        th:if="${song.releaseDate != null}"
+                        th:text="${song.releaseDate}"
+                      ></span>
+                      <span
+                        th:if="${song.releaseDate == null}"
+                        class="text-muted"
+                        >N/A</span
+                      >
+                    </p>
+                    <p
+                      class="card-text text-muted text-truncate"
+                      th:title="${song.lyrics}"
+                    >
+                      <strong>Lyrics:</strong>
+                      <span th:text="${song.lyrics} ?: 'No lyrics'"></span>
+                    </p>
+                  </div>
+                  <div class="card-footer bg-light border-top">
+                    <a
+                      th:href="@{/song/details/{slug}(slug=${song.slug})}"
+                      class="btn btn-sm btn-primary"
+                    >
+                      👁️ View Details
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div th:if="${songList.size() == 0}" class="alert alert-info">
+            <span
+              >No songs found matching your search criteria. Try different
+              keywords!</span
+            >
+          </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="mt-4">
+          <a href="/home" class="btn btn-secondary">← Back to Home</a>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
