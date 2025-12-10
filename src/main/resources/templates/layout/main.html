@@ -34,7 +34,7 @@
     <!-- Canonical URL -->
     <link
       rel="canonical"
-      th:href="${canonicalUrl} ? ${canonicalUrl} : 'http://localhost:8080/home'"
+      th:href="${canonicalUrl} ? ${canonicalUrl} : 'http://localhost:8080'"
     />
 
     <!-- Open Graph / Facebook Meta Tags -->
@@ -49,7 +49,7 @@
     />
     <meta
       property="og:url"
-      th:content="${canonicalUrl} ? ${canonicalUrl} : 'http://localhost:8080/home'"
+      th:content="${canonicalUrl} ? ${canonicalUrl} : 'http://localhost:8080'"
     />
     <meta
       property="og:image"
@@ -106,7 +106,7 @@
         <div class="container-lg">
           <a
             class="navbar-brand fw-bold d-flex justify-content-between align-items-center"
-            href="/home"
+            href="/"
           >
             <img
               th:src="@{/images/logo.png}"
@@ -129,7 +129,7 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav ms-auto">
-              <a class="nav-link" href="/home">Home</a>
+              <a class="nav-link" href="/">Home</a>
               <a class="nav-link" href="#">Explore</a>
               <a class="nav-link" href="/about">About</a>
             </div>
@@ -158,7 +158,7 @@
               <span class="text-primary fw-bold">🏠 Home</span>
             </li>
             <li class="breadcrumb-item" th:unless="${isHomePage}">
-              <a href="/home" class="text-decoration-none text-primary fw-bold"
+              <a href="/" class="text-decoration-none text-primary fw-bold"
                 >🏠 Home</a
               >
             </li>

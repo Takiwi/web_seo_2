@@ -27,6 +27,8 @@ import doan.bai_2.models.ArtistEntity;
 import doan.bai_2.models.ArtistSong;
 import doan.bai_2.models.SongEntity;
 import doan.bai_2.services.SongService;
+import doan.bai_2.config.SeoConfig;
+import doan.bai_2.utils.SchemaOrgUtil;
 import jakarta.validation.Valid;
 
 @Controller
@@ -53,12 +55,15 @@ public class SongController {
     @Autowired
     private SongService songService;
 
+    @Autowired
+    private SeoConfig seoConfig;
+
     @GetMapping("/add")
     public String add(Model model) {
         model.addAttribute("countries", countryRepo.findAll());
         model.addAttribute("genres", genreRepo.findAll());
         
-        return "admin/song/addSong";
+        return "song/addSong";
     }
     
     @PostMapping("/add")
@@ -93,7 +98,7 @@ public class SongController {
         model.addAttribute("countries", countryRepo.findAll());
         model.addAttribute("imageUrl", "/image/song/" + song.get().getId() + "/" + song.get().getImage());
 
-        return "admin/song/updateSong";
+        return "song/updateSong";
     }
 
     @PostMapping("/update/{id}")
@@ -106,14 +111,42 @@ public class SongController {
     
     @GetMapping("/details/{slug}")
     public String details(@PathVariable String slug, Model model) {
-        Optional<SongEntity> song = songRepo.findBySlug(slug);
-        Optional<AlbumEntity> album = albumRepo.findBySongs(song.get());
-        List<ArtistSong> artistSong = artistSongRepo.findArtistBySong(song.get());
+        Optional<SongEntity> songOpt = songRepo.findBySlug(slug);
+        if (songOpt.isEmpty()) {
+            return "redirect:/"; // Or a 404 page
+        }
+        SongEntity song = songOpt.get();
         
-        model.addAttribute("song", song.get());
-        model.addAttribute("album", album.get());
-        model.addAttribute("artistSong", artistSong);
+        Optional<AlbumEntity> albumOpt = albumRepo.findBySongs(song);
+        List<ArtistSong> artistSongs = artistSongRepo.findArtistBySong(song);
         
-        return "admin/song/details";
+        // -- SEO Metadata --
+        String songUrl = seoConfig.getSiteUrl() + "/song/details/" + slug;
+        String imageUrl = seoConfig.getSiteUrl() + "/image/song/" + song.getId() + "/" + song.getImage();
+        String artistName = artistSongs.isEmpty() ? "Unknown Artist" : artistSongs.get(0).getArtist().getName();
+        String albumName = albumOpt.isPresent() ? albumOpt.get().getTitle() : "";
+        String genreName = song.getGenre() != null ? song.getGenre().getName() : "";
+
+        model.addAttribute("pageTitle", song.getTitle() + " by " + artistName + " - Music Hub");
+        model.addAttribute("pageDescription", "Listen to " + song.getTitle() + " by " + artistName + ". Genre: " + genreName);
+        model.addAttribute("canonicalUrl", songUrl);
+        model.addAttribute("ogImage", imageUrl);
+
+        // Schema.org structured data
+        String schemaJson = SchemaOrgUtil.createSongSchema(
+            song.getTitle(),
+            imageUrl,
+            songUrl,
+            artistName,
+            albumName,
+            genreName
+        );
+        model.addAttribute("schemaJson", schemaJson);
+
+        model.addAttribute("song", song);
+        albumOpt.ifPresent(album -> model.addAttribute("album", album));
+        model.addAttribute("artistSong", artistSongs);
+        
+        return "song/details";
     }
 }

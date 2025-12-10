@@ -29,13 +29,14 @@ public class SchemaOrgUtil {
     /**
      * Tạo Schema.org MusicAlbum markup
      */
-    public static String createAlbumSchema(String name, String image, String url, String artist) {
+    public static String createAlbumSchema(String name, String image, String url, String artist, int numTracks) {
         ObjectNode schema = objectMapper.createObjectNode();
         schema.put("@context", "https://schema.org");
         schema.put("@type", "MusicAlbum");
         schema.put("name", name);
         schema.put("image", image);
         schema.put("url", url);
+        schema.put("numTracks", numTracks);
         
         ObjectNode artistNode = objectMapper.createObjectNode();
         artistNode.put("@type", "Person");
@@ -52,7 +53,7 @@ public class SchemaOrgUtil {
     /**
      * Tạo Schema.org MusicRecording markup cho Song
      */
-    public static String createSongSchema(String name, String image, String url, String artist, String album) {
+    public static String createSongSchema(String name, String image, String url, String artist, String album, String genre) {
         ObjectNode schema = objectMapper.createObjectNode();
         schema.put("@context", "https://schema.org");
         schema.put("@type", "MusicRecording");
@@ -70,6 +71,10 @@ public class SchemaOrgUtil {
             albumNode.put("@type", "MusicAlbum");
             albumNode.put("name", album);
             schema.set("inAlbum", albumNode);
+        }
+
+        if (genre != null && !genre.isEmpty()) {
+            schema.put("genre", genre);
         }
         
         try {

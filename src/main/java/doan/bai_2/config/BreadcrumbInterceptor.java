@@ -18,7 +18,7 @@ public class BreadcrumbInterceptor implements HandlerInterceptor {
 
     static {
         // Mapping URL patterns to breadcrumb titles
-        URL_TO_TITLE.put("/home", "Home");
+        URL_TO_TITLE.put("/", "Home");
         URL_TO_TITLE.put("/about", "About");
         URL_TO_TITLE.put("/search/artist", "Search Artist");
         URL_TO_TITLE.put("/search/song", "Search Song");

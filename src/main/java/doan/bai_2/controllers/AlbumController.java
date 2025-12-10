@@ -21,6 +21,8 @@ import doan.bai_2.models.SongEntity;
 import doan.bai_2.services.AlbumService;
 import jakarta.validation.Valid;
 
+import doan.bai_2.config.SeoConfig;
+import doan.bai_2.utils.SchemaOrgUtil;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -40,9 +42,12 @@ public class AlbumController {
     @Autowired
     private SongRepository songRepo;
 
+    @Autowired
+    private SeoConfig seoConfig;
+
     @GetMapping("/add")
     public String add(Model model) {
-        return "admin/album/addAlbum";
+        return "album/addAlbum";
     }
     
     @PostMapping("/add")
@@ -68,7 +73,7 @@ public class AlbumController {
         model.addAttribute("album", album.get());
         model.addAttribute("imageUrl", "/image/album/" + album.get().getId() + "/" + album.get().getImage());
 
-        return "admin/album/updateAlbum";
+        return "album/updateAlbum";
     }
     
     @PostMapping("/update/{id}")
@@ -80,16 +85,41 @@ public class AlbumController {
     }
     
     @GetMapping("/details/{slug}")
-    public String getMethodName(@PathVariable String slug, Model model) {
-        Optional<AlbumEntity> album = albumRepo.findBySlug(slug);
-        Optional<ArtistEntity> artist = artistRepo.findByAlbum(album.get());
-        List<SongEntity> songList = songRepo.findByAlbum(album.get());
+    public String details(@PathVariable String slug, Model model) {
+        Optional<AlbumEntity> albumOpt = albumRepo.findBySlug(slug);
+        if (albumOpt.isEmpty()) {
+            return "redirect:/"; // Or a 404 page
+        }
+        AlbumEntity album = albumOpt.get();
+        
+        Optional<ArtistEntity> artistOpt = artistRepo.findByAlbum(album);
+        List<SongEntity> songList = songRepo.findByAlbum(album);
 
-        model.addAttribute("album", album.get());
-        model.addAttribute("artist", artist.get());
+        // -- SEO Metadata --
+        String imageUrl = seoConfig.getSiteUrl() + "/image/album/" + album.getId() + "/" + album.getImage();
+        String albumUrl = seoConfig.getSiteUrl() + "/album/details/" + album.getSlug();
+        String artistName = artistOpt.isPresent() ? artistOpt.get().getName() : "Various Artists";
+
+        model.addAttribute("pageTitle", album.getTitle() + " by " + artistName + " - Music Hub");
+        model.addAttribute("pageDescription", "Listen to the album " + album.getTitle() + " by " + artistName + ". Includes " + songList.size() + " tracks.");
+        model.addAttribute("canonicalUrl", albumUrl);
+        model.addAttribute("ogImage", imageUrl);
+        
+        // Schema.org structured data
+        String schemaJson = SchemaOrgUtil.createAlbumSchema(
+            album.getTitle(),
+            imageUrl,
+            albumUrl,
+            artistName,
+            songList.size()
+        );
+        model.addAttribute("schemaJson", schemaJson);
+
+        model.addAttribute("album", album);
+        artistOpt.ifPresent(artist -> model.addAttribute("artist", artist));
         model.addAttribute("songList", songList);
         
-        return "admin/album/details";
+        return "album/details";
     }
     
 }

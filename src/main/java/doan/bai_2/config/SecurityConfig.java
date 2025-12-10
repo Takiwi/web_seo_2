@@ -28,12 +28,12 @@ public class SecurityConfig {
             .requestMatchers("/admin/**").hasRole("ADMIN")
 
             // user and admin
-            .requestMatchers("/home/**").authenticated()
+            .requestMatchers("/**").authenticated()
             .anyRequest().authenticated()
         ).formLogin(form -> form
             .loginPage("/login")
             .loginProcessingUrl("/login")
-            .defaultSuccessUrl("/home", true)
+            .defaultSuccessUrl("/", true)
             .failureUrl("/login?error=true")
             .permitAll()
         ).logout(logout -> logout

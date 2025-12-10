@@ -6,12 +6,7 @@
   layout:decorate="~{layout/main}"
 >
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard - Music Hub</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-    <link rel="stylesheet" th:href="@{/css/custom.css}" />
-    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <title>User Management - Admin Dashboard</title>
   </head>
   <body>
     <section layout:fragment="content">
@@ -20,45 +15,9 @@
           <div class="col-12">
             <div class="card shadow-sm border-0">
               <div class="card-body">
-                <h1 class="mb-1">⚡ Admin Dashboard</h1>
-                <p class="text-muted">
-                  Manage your music library - Choose a category below
-                </p>
+                <h1 class="mb-1">👥 User Management</h1>
+                <p class="text-muted" th:text="'Total users: ' + ${users.size()}"></p>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quick Navigation Cards -->
-        <div class="row mb-5">
-          <div class="col-md-4 mb-3">
-            <div class="card border-0 shadow-sm hover-card text-center p-4">
-              <h2 class="mb-3">🎤</h2>
-              <h5>Manage Artists</h5>
-              <p class="text-muted small">View, edit, and delete artists</p>
-              <a href="/admin/artists" class="btn btn-primary w-100"
-                >Go to Artists</a
-              >
-            </div>
-          </div>
-          <div class="col-md-4 mb-3">
-            <div class="card border-0 shadow-sm hover-card text-center p-4">
-              <h2 class="mb-3">🎵</h2>
-              <h5>Manage Songs</h5>
-              <p class="text-muted small">View, edit, and delete songs</p>
-              <a href="/admin/songs" class="btn btn-primary w-100"
-                >Go to Songs</a
-              >
-            </div>
-          </div>
-          <div class="col-md-4 mb-3">
-            <div class="card border-0 shadow-sm hover-card text-center p-4">
-              <h2 class="mb-3">💿</h2>
-              <h5>Manage Albums</h5>
-              <p class="text-muted small">View, edit, and delete albums</p>
-              <a href="/admin/albums" class="btn btn-primary w-100"
-                >Go to Albums</a
-              >
             </div>
           </div>
         </div>
@@ -78,45 +37,46 @@
           ></button>
         </div>
 
-        <!-- Quick Stats -->
-        <div class="row mb-5">
-          <div class="col-md-4">
-            <div class="card border-0 bg-light p-3">
-              <div class="d-flex align-items-center">
-                <div class="me-3">
-                  <span class="fs-2">🎤</span>
-                </div>
-                <div>
-                  <h6 class="mb-0 text-muted">Total Artists</h6>
-                  <h3 class="mb-0" th:text="${artistList.size()}"></h3>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card border-0 bg-light p-3">
-              <div class="d-flex align-items-center">
-                <div class="me-3">
-                  <span class="fs-2">🎵</span>
-                </div>
-                <div>
-                  <h6 class="mb-0 text-muted">Total Songs</h6>
-                  <h3 class="mb-0" th:text="${songList.size()}"></h3>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card border-0 bg-light p-3">
-              <div class="d-flex align-items-center">
-                <div class="me-3">
-                  <span class="fs-2">💿</span>
-                </div>
-                <div>
-                  <h6 class="mb-0 text-muted">Total Albums</h6>
-                  <h3 class="mb-0" th:text="${albumList.size()}"></h3>
-                </div>
-              </div>
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Full Name</th>
+                    <th scope="col">Roles</th>
+                    <th scope="col">Enabled</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="user : ${users}">
+                    <th scope="row" th:text="${user.id}"></th>
+                    <td th:text="${user.email}"></td>
+                    <td th:text="${user.fullName}"></td>
+                    <td>
+                      <span
+                        th:each="role : ${user.roles}"
+                        th:text="${role.name}"
+                        class="badge bg-primary me-1"
+                      ></span>
+                    </td>
+                    <td>
+                      <span
+                        th:if="${user.isEnabled()}"
+                        class="badge bg-success"
+                        >Enabled</span
+                      >
+                      <span
+                        th:unless="${user.isEnabled()}"
+                        class="badge bg-danger"
+                        >Disabled</span
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -124,13 +84,3 @@
     </section>
   </body>
 </html>
-
-<style>
-  .hover-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .hover-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15) !important;
-  }
-</style>

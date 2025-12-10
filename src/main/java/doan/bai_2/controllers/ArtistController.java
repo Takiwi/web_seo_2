@@ -24,6 +24,7 @@ import doan.bai_2.models.SongEntity;
 import doan.bai_2.services.ArtistService;
 import jakarta.validation.Valid;
 
+import doan.bai_2.config.SeoConfig;
 import doan.bai_2.utils.SchemaOrgUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -51,12 +52,15 @@ public class ArtistController {
     @Autowired
     private SongRepository songRepo;
 
+    @Autowired
+    private SeoConfig seoConfig;
+
     @GetMapping("/add")
     public String add(Model model) {
         model.addAttribute("countries", countryRepo.findAll());
         model.addAttribute("types", typeRepo.findAll());
 
-        return "admin/artist/addArtist";
+        return "artist/addArtist";
     }
 
     @GetMapping("/update/{slug}")
@@ -68,7 +72,7 @@ public class ArtistController {
         model.addAttribute("imageUrl", "/image/artist/" + artist.get().getId() + "/" + artist.get().getImage());
         model.addAttribute("types", typeRepo.findAll());
 
-        return "admin/artist/updateArtist";
+        return "artist/updateArtist";
     }
 
     @GetMapping("/delete/{id}")
@@ -86,7 +90,7 @@ public class ArtistController {
         
         if(albumList.isEmpty()){
             model.addAttribute("artist", artist.get());
-            return "admin/artist/details";
+            return "artist/details";
         }
 
         List<SongEntity> songList = new ArrayList<>();
@@ -98,7 +102,7 @@ public class ArtistController {
         // -- SEO Metadata --
         ArtistEntity artistEntity = artist.get();
         String imageUrl = "/image/artist/" + artistEntity.getId() + "/" + artistEntity.getImage();
-        String artistUrl = "http://localhost:8080/artist/details/" + artistEntity.getSlug();
+        String artistUrl = seoConfig.getSiteUrl() + "/artist/details/" + artistEntity.getSlug();
         
         // Set page metadata for layout
         model.addAttribute("pageTitle", artistEntity.getName() + " - Music Hub");
@@ -122,12 +126,12 @@ public class ArtistController {
         model.addAttribute("albumList", albumList);
         model.addAttribute("songList", songList);
         
-        return "admin/artist/details";
+        return "artist/details";
     }
 
     @GetMapping("/result")
     public String result(Model model) {
-        return "admin/artist/results";
+        return "artist/results";
     }
     
     

@@ -42,7 +42,7 @@ public class HomeController {
     @Autowired
     private AlbumRepository albumRepo;
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String home(Model model) {
         ArtistEntity artistIndex = artistService.getRandomArtist();
 
@@ -64,7 +64,7 @@ public class HomeController {
         model.addAttribute("pageKeywords", "search artists, music");
         model.addAttribute("countries", countryRepo.findAll());
 
-        return "admin/artist/search";
+        return "artist/search";
     }
     
     @PostMapping("/search/artist")
@@ -75,7 +75,7 @@ public class HomeController {
         model.addAttribute("pageDescription", "Found " + response.getArtist().size() + " artists matching your search.");
         model.addAttribute("artistList", response.getArtist());
 
-        return "admin/artist/results";
+        return "artist/results";
     }
 
     @GetMapping("/search/song")
@@ -85,7 +85,7 @@ public class HomeController {
         model.addAttribute("pageKeywords", "search songs, music");
         model.addAttribute("genres", genreRepo.findAll());
 
-        return "admin/song/search";
+        return "song/search";
     }
     
     @PostMapping("/search/song")
@@ -97,7 +97,7 @@ public class HomeController {
         model.addAttribute("genres", genreRepo.findAll());
         model.addAttribute("songList", response.getSongs());
 
-        return "admin/song/results";
+        return "song/results";
     }
 
     @GetMapping("/search/album")
@@ -106,7 +106,7 @@ public class HomeController {
         model.addAttribute("pageDescription", "Search for albums by title and artist.");
         model.addAttribute("pageKeywords", "search albums, music");
 
-        return "admin/album/search";
+        return "album/search";
     }
 
     @PostMapping("/search/album")
@@ -117,7 +117,7 @@ public class HomeController {
         model.addAttribute("pageDescription", "Found " + response.getAlbum().size() + " albums matching your search.");
         model.addAttribute("albumList", response.getAlbum());
 
-        return "admin/album/results";
+        return "album/results";
     }
 
     @GetMapping("/about")
